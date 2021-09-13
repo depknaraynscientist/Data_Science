@@ -1,0 +1,303 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "Untitled2.ipynb",
+      "provenance": [],
+      "collapsed_sections": [],
+      "authorship_tag": "ABX9TyNjJVGUM7Euf+f411qfvGpQ",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/depknaraynscientist/Data_Science/blob/main/ML_ZoomCamp_A1\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "VuTrveH9DLO3"
+      },
+      "source": [
+        "Question 1 :"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 35
+        },
+        "id": "Ul-qPPLfDOUW",
+        "outputId": "7d791620-718d-46a2-b35d-dc40c36974c0"
+      },
+      "source": [
+        "import numpy as np\n",
+        "np.__version__"
+      ],
+      "execution_count": 3,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "application/vnd.google.colaboratory.intrinsic+json": {
+              "type": "string"
+            },
+            "text/plain": [
+              "'1.19.5'"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 3
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 35
+        },
+        "id": "Me0_sVcqDbi-",
+        "outputId": "5a408a77-3ef9-442b-f8b2-bf9bf26e95a9"
+      },
+      "source": [
+        "import pandas as pd\n",
+        "pd.__version__\n"
+      ],
+      "execution_count": 4,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "application/vnd.google.colaboratory.intrinsic+json": {
+              "type": "string"
+            },
+            "text/plain": [
+              "'1.1.5'"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 4
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "T4vqmdHKDguJ"
+      },
+      "source": [
+        "df = pd.read_csv(\"https://raw.githubusercontent.com/alexeygrigorev/mlbookcamp-code/master/chapter-02-car-price/data.csv\")"
+      ],
+      "execution_count": 5,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "_MBBgL14Ewk7",
+        "outputId": "aa4e67fd-b962-47f0-f533-5c3ae2609740"
+      },
+      "source": [
+        "df.head()\n",
+        "df['Make'].unique()\n",
+        "criteria = (df['Make'] == \"BMW\")\n",
+        "df.loc[criteria, 'MSRP'].mean()"
+      ],
+      "execution_count": 34,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "61546.76347305389"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 34
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "ozgN4vpmFMW6",
+        "outputId": "45d56699-6c71-4626-e678-70d067e7f726"
+      },
+      "source": [
+        "criteria = (df['Year'] >= 2015)\n",
+        "subset = df.loc[criteria, :]\n",
+        "#subset.info()\n",
+        "#Out of 5995 rows, 5995-5944 missing values = 51 missing\n",
+        "sum(subset['Engine HP'].isna())"
+      ],
+      "execution_count": 21,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "51"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 21
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "CqDmdGidFhcl",
+        "outputId": "210f5366-a8cd-4fc0-9326-13f28abbd354"
+      },
+      "source": [
+        "avg1 = df['Engine HP'].mean()\n",
+        "print(avg1)\n",
+        "df['Engine HP'].fillna(avg1)\n",
+        "avg2 = df['Engine HP'].mean()\n",
+        "print(avg2)\n",
+        "#Same if we do not use skipna=False.\n",
+        "print(round(avg1), round(avg2))\n",
+        "#Same after rounding."
+      ],
+      "execution_count": 29,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "249.38607007176023\n",
+            "249.38607007176023\n",
+            "249 249\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "pXGYtVKyG0Pr",
+        "outputId": "75240761-a372-4e80-e072-907039451536"
+      },
+      "source": [
+        "criteria_6 = (df['Make'] == \"Rolls-Royce\")\n",
+        "subset_6 = df.loc[criteria_6, [\"Engine HP\", \"Engine Cylinders\", \"highway MPG\"]]\n",
+        "X = subset_6.drop_duplicates().to_numpy()\n",
+        "#type(X)\n",
+        "XTX = np.dot(X.T, X)\n",
+        "inv_XTX = np.linalg.inv(XTX)\n",
+        "print(XTX + inv_XTX)"
+      ],
+      "execution_count": 54,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "[[1.75480100e+06 3.96560009e+04 6.51959981e+04]\n",
+            " [3.96560009e+04 9.28105723e+02 1.49991129e+03]\n",
+            " [6.51959981e+04 1.49991129e+03 2.45410590e+03]]\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "rB6jZBv_LLLg",
+        "outputId": "af475cb3-ab44-4f8e-ebac-62d6257124a3"
+      },
+      "source": [
+        "y = np.array([1000, 1100, 900, 1200, 1000, 850, 1300])\n",
+        "result = np.dot(inv_XTX, X.T)\n",
+        "result = np.dot(result, y)\n",
+        "print(result)"
+      ],
+      "execution_count": 56,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "[ 0.19989598 31.02612262 31.65378877]\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "TcCDifG4HzF7",
+        "outputId": "d05c88bd-1f12-47c3-b355-5d282eb2204c"
+      },
+      "source": [
+        "df.columns"
+      ],
+      "execution_count": 31,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "Index(['Make', 'Model', 'Year', 'Engine Fuel Type', 'Engine HP',\n",
+              "       'Engine Cylinders', 'Transmission Type', 'Driven_Wheels',\n",
+              "       'Number of Doors', 'Market Category', 'Vehicle Size', 'Vehicle Style',\n",
+              "       'highway MPG', 'city mpg', 'Popularity', 'MSRP'],\n",
+              "      dtype='object')"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 31
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "Tym2wze0Hz2Q"
+      },
+      "source": [
+        ""
+      ],
+      "execution_count": null,
+      "outputs": []
+    }
+  ]
+}
